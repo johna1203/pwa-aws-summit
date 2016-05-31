@@ -33,7 +33,7 @@ return [
         ],
         [
             'name' => 'api.getorder',
-            'path' => '/api/getOrderReference',
+            'path' => '/api/getOrderReference/{order_id}',
             'middleware' => App\Action\GetOrderReferenceAction::class,
             'allowed_methods' => ['GET'],
         ],

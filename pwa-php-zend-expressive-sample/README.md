@@ -135,7 +135,5 @@ $ eb open amzn-payments
 ![サンプルプログラム](https://raw.githubusercontent.com/wiki/johna1203/pwa-aws-summit/images/php-app-top-sample.png)
 
 ## HTTPSの環境を作ろう
-Amazon Paymentsは、HTTPSがないと動かない為
-
-
+Amazon Paymentsは、HTTPSがないと動かない Elastic Beanstalk のアプリケーションをHTTPSに対応させる必要があります。
 
