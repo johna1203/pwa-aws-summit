@@ -19,7 +19,7 @@
 1. [eb create でアプリケーションを作成してみよう！](#user-content-eb-create-でアプリケーションを作成してみよう)
 1. [HTTPSの環境を作ろう](#user-content-httpsの環境を作ろう)
 1. [eb deploy して HTTPSの設定を反映させましょう](#user-content-eb-deploy-してhttpsの設定を反映させましょう)
-1. [最後にアプリケーションのURLをSeller Centralに登録しよう](#user-content-最後にアプリケーションのURLをseller-centralに登録しよう)
+1. [最後にアプリケーションのURLをSeller Centralに登録しよう](#user-content-最後にアプリケーションのurlをseller-centralに登録しよう)
 
 ## git clone をしよう
 
@@ -238,3 +238,22 @@ httpsでページにアクセスしてみると This Connection is Untrusted �
 ***これで、Elastic Beansの設定は完了です。*** お疲れ様でした。
 
 ## 最後にアプリケーションのURLをSeller Centralに登録しよう
+
+Amazon Paymentsのログインをするには、サイトのURLを Seller Centralに登録する必要があります。
+今回私がDeployしたURLは[https://amzn-payments.egma52bepp.ap-northeast-1.elasticbeanstalk.com/](https://amzn-payments.egma52bepp.ap-northeast-1.elasticbeanstalk.com/)です。
+
+このURLをベースにSeller Centralに登録する方法を教えます。
+
+下の画像の画像のように
+
+Javascriptの種類 : https://amzn-payments.egma52bepp.ap-northeast-1.elasticbeanstalk.com/
+
+リダイレクトURL : https://amzn-payments.egma52bepp.ap-northeast-1.elasticbeanstalk.com/callback
+
+に設定してください。
+
+![https://raw.githubusercontent.com/wiki/johna1203/pwa-aws-summit/images/seller_central_url_add.png](https://raw.githubusercontent.com/wiki/johna1203/pwa-aws-summit/images/seller_central_url_add.png)
+
+設定が成功したら、アプリケーションの***Amazonアカウントでを支払い***を押して、テストユーザでログインすると下の画像のようにAddress WidgetsとWallet Widgetsが表示されます。
+
+![https://raw.githubusercontent.com/wiki/johna1203/pwa-aws-summit/images/seller_central_url_add.png](https://raw.githubusercontent.com/wiki/johna1203/pwa-aws-summit/images/seller_central_url_add.png)
