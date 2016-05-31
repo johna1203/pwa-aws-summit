@@ -26,56 +26,97 @@ Checking connectivity... done.
 
 ```
 
-2. EB CLIの設定
+3. Amazon Paymentsの基本的な設定
 
-私は、このように設定しました。
-phpのバージョンは ** PHP 5.5 ** 以上に設定してください！！！
+merchant_id, access_key, secret_key, client_idの設定をしましょう。
+
+自分のキーがわからない場合は [Seller Central で開発キーの確認](https://github.com/johna1203/pwa-aws-summit/wiki/Seller-Central-%E3%81%A7%E9%96%8B%E7%99%BA%E3%82%AD%E3%83%BC%E3%81%AE%E7%A2%BA%E8%AA%8D)をみてください。
+
+config/autoloadの中に、 local.php.dist ファイルを用意してあるので、それを local.php に変更して中身を自分の設定に変更しましょう。
 
 ```shell
 
-$ cd pwa-aws-summit/pwa-php-zend-expressive-sample
-$ eb init
+$ cp local.php.dist local.php
+$ vi local.php #好きな、エディターを使って編集してね
 
-Select a default region
-1) us-east-1 : US East (N. Virginia)
-2) us-west-1 : US West (N. California)
-3) us-west-2 : US West (Oregon)
-4) eu-west-1 : EU (Ireland)
-5) eu-central-1 : EU (Frankfurt)
-6) ap-southeast-1 : Asia Pacific (Singapore)
-7) ap-southeast-2 : Asia Pacific (Sydney)
-8) ap-northeast-1 : Asia Pacific (Tokyo)
-9) ap-northeast-2 : Asia Pacific (Seoul)
-10) sa-east-1 : South America (Sao Paulo)
-11) cn-north-1 : China (Beijing)
-(default is 3): 8
+<?php
 
-Enter Application Name
-(default is "pwa-php-zend-expressive-sample"):
-Application pwa-php-zend-expressive-sample has been created.
+return [
+    'pwaConfig' => [
+        'merchant_id'   => 'A23YM23UEBY8FM',
+        'access_key'    => 'AKIAJ....N5GV.....YMQ',
+        'secret_key'    => 'QEn.....5YBJdZoW......O2wK',
+        'client_id'     => 'amzn1.application-oa2-client.eef53cd200af4140be574e1a44e9576c',
+        'currency_code' => 'JPY',
+        'region'        => 'jp',
+        'sandbox'   => true
+    ]
+];
+```
 
-Select a platform.
-1) Node.js
-2) PHP
-3) Python
-4) Ruby
-5) Tomcat
-6) IIS
-7) Docker
-8) Multi-container Docker
-9) GlassFish
-10) Go
-11) Java
-(default is 1): 2
+これで、アプリケーションの作成準備ができました。
 
-Select a platform version.
-1) PHP 5.4
-2) PHP 5.5
-3) PHP 5.6
-4) PHP 5.3
-(default is 1): 2
-Do you want to set up SSH for your instances?
-(y/n): n
+2. EB CLIの設定
+
+EB CLI 基本的な設定は、[.elasticbeanstalk/config.global.yml](https://raw.githubusercontent.com/johna1203/pwa-aws-summit/master/pwa-php-zend-expressive-sample/.elasticbeanstalk/config.global.yml)
+で設定してありますので変更が必要なければこのまま使っても問題ないと思います。
+
+下記のようになっております。必要に応じて変更してください。
+
+```yml
+branch-defaults:
+  default:
+    environment: null
+global:
+  application_name: pwa-php-zend-expressive-sample
+  default_ec2_keyname: null
+  default_platform: PHP 5.5
+  default_region: ap-northeast-1
+  profile: eb-cli
+  sc: null
+```
+
+3. eb create でアプリケーションを作成してみよう！
+
+今回は、amzn-paymentsと言うEnvironmentを使ってアプリケーションを作成します。
+
+コマンドはこんな感じです。
+
+```shell
+$ eb create amzn-payments
+Creating application version archive "app-160531_203116".
+Uploading pwa-php-zend-expressive-sample/app-160531_203116.zip to S3. This may take a while.
+Upload Complete.
+Environment details for: amzn-payments
+  Application name: pwa-php-zend-expressive-sample
+  Region: ap-northeast-1
+  Deployed Version: app-160531_203116
+  Environment ID: e-kymrtdw6qg
+  Platform: 64bit Amazon Linux 2016.03 v2.1.2 running PHP 5.5
+  Tier: WebServer-Standard
+  CNAME: UNKNOWN
+  Updated: 2016-05-31 11:31:19.118000+00:00
+Printing Status:
+
+......省略
+
+INFO: Successfully launched environment: amzn-payments
 
 ```
 
+以上で一応アプリケーションは起動できたはずです。
+
+確認してみよう。
+eb open コマンドを使えばブラウザーでアプリケーションを開く事ができます。
+
+```shell
+
+$ eb open amzn-payments
+
+```
+
+このような画面がでれば、第一段階は成功です。
+
+![サンプルプログラム](https://raw.githubusercontent.com/wiki/johna1203/pwa-aws-summit/images/php-app-top-sample.png)
+
+3. オレオレSSLの作成
