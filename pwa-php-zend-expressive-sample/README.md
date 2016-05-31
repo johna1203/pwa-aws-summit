@@ -16,7 +16,7 @@
 1. [Amazon Paymentsの基本的な設定](#user-content-amazon-paymentsの基本的な設定)
 1. [localhostで動かしてみよう](#user-content-localhostで動かしてみよう)
 1. [EB CLIの設定](#user-content-eb-cliの設定)
-1. [eb create でアプリケーションを作成してみよう！](#user-content-eb-create-でアプリケーションを作成してみよう！)
+1. [eb create でアプリケーションを作成してみよう！](#user-content-eb-create-でアプリケーションを作成してみよう)
 1. [HTTPSの環境を作ろう](#user-content-httpsの環境を作ろう)
 1. [eb deploy して HTTPSの設定を反映させましょう](#user-content-eb-deploy-してhttpsの設定を反映させましょう)
 1. [最後にアプリケーションのURLをSeller Centralに登録しよう](#user-content-最後にアプリケーションのURLをseller-centralに登録しよう)
