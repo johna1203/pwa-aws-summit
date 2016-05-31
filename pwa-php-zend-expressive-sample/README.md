@@ -135,5 +135,94 @@ $ eb open amzn-payments
 ![サンプルプログラム](https://raw.githubusercontent.com/wiki/johna1203/pwa-aws-summit/images/php-app-top-sample.png)
 
 ## HTTPSの環境を作ろう
-Amazon Paymentsは、HTTPSがないと動かない Elastic Beanstalk のアプリケーションをHTTPSに対応させる必要があります。
+Amazon Paymentsは、HTTPSがないと動かないため Elastic Beanstalk のアプリケーションをHTTPSに対応させる必要があります。
+そこで、自分のSSLのキーを作りましょう。
 
+適当な場所へ移動して、下記のコマンドを実行
+
+```shell
+$ /path/to/pwa-aws-summit/pwa-php-zend-expressive-sample/data
+$ openssl genrsa 2048 > server.key
+$ openssl req -new -key server.key > server.csr
+
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [AU]:JP
+State or Province Name (full name) [Some-State]:Tokyo-to
+Locality Name (eg, city) []:Meguro-ku
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:Amazon Japan
+Organizational Unit Name (eg, section) []:Amazon Payments
+Common Name (e.g. server FQDN or YOUR name) []:amzn-payments.egma52bepp.ap-northeast-1.elasticbeanstalk.com
+Email Address []:froeming@amazon.com
+
+Please enter the following 'extra' attributes
+to be sent with your certificate request
+A challenge password []:
+An optional company name []:
+
+$ openssl x509 -days 3650 -req -signkey server.key < server.csr > server.crt
+
+```
+
+できたら、AWSにSSL証明書を登録して、 .ebextensions/securelistener.config.distを編集します。
+
+ ```shell
+
+$ aws iam upload-server-certificate \
+  --server-certificate-name amazon-payments-beanstalk-x509 \
+  --certificate-body file://server.crt \
+  --private-key file://server.key
+
+{
+    "ServerCertificateMetadata": {
+        "ServerCertificateId": "ASCAJA3RI4B2UVIUAWVY4",
+        "ServerCertificateName": "amazon-payments-beanstalk-x509",
+        "Expiration": "2026-05-29T14:16:58Z",
+        "Path": "/",
+        "Arn": "arn:aws:iam::##########:server-certificate/amazon-payments-beanstalk-x509", #ここをコピー
+        "UploadDate": "2016-05-31T14:18:12.691Z"
+    }
+}
+
+$ cd /path/to/pwa-aws-summit/pwa-php-zend-expressive-sample/.ebextensions
+$ cp securelistener.config.dist securelistener.config
+$ vi securelistener.config #SSLCertificateId に Arnをペースト
+
+option_settings:
+  aws:elb:listener:443:
+    SSLCertificateId: arn:aws:iam::##########:server-certificate/amazon-payments-beanstalk-x509
+    ListenerProtocol: HTTPS
+    InstancePort: 80
+
+```
+
+これで、HTTPSの準備完了です。
+deploy して HTTPSの設定を反映させましょう。
+
+```shell
+
+eb deploy amzn-payments
+
+Creating application version archive "app-160531_232532".
+Uploading pwa-php-zend-expressive-sample/app-160531_232532.zip to S3. This may take a while.
+Upload Complete.
+INFO: Environment update is starting.
+INFO: Environment health has transitioned from Ok to Info. Application update in progress (running for 21 seconds).
+INFO: Created security group named: sg-71099315
+INFO: Deploying new version to instance(s).
+INFO: New application version was deployed to running EC2 instances.
+INFO: Environment update completed successfully.
+
+```
+
+httpsでページにアクセスしてみると This Connection is Untrusted と表示されますが自分で証明書を発行した為です。
+気にせずに、そのまま進めるとアプリケーションの画面が表示されます。
+
+![https://raw.githubusercontent.com/wiki/johna1203/pwa-aws-summit/images/untrust.png](https://raw.githubusercontent.com/wiki/johna1203/pwa-aws-summit/images/untrust.png)
+
+*** これで、Elastic Beansの設定は完了です *** お疲れ様でした。
