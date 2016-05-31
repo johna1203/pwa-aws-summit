@@ -1,9 +1,9 @@
-# Elastic Beanstalk を使って５分〜１０分で立ち上げに挑戦！
+# # Amazon Payments のサンプルを Elastic Beanstalk を使って動かしてみよう。
 
 すぐに、アプリ開発を進めて頂けるように、[Zend Expressive](https://zendframework.github.io/zend-expressive/)
 ベースにAmazon Paymentsの開発が始められるアプリケーションを作りました。
 
-このアプリケーションを、Elastic Beanstalkを使って素早く立ち上げてみよう！ 最短５分で！ ^^;
+このアプリケーションを、Elastic Beanstalkを使って素早く立ち上げてみよう！ 最短１０分で！ ^^;
 
 ### 事前にこれらをインストールしておいてください
 
@@ -55,6 +55,21 @@ return [
 ```
 
 これで、アプリケーションの作成準備ができました。
+
+## localhostで動かしてみよう
+Elastic Beanstalkに、deployする前にアプリケーションがうまく動作しているかlocalhostで確認する事ができます。
+
+[Composer](https://getcomposer.org/) を使ってlocalhostで立ち上げるには下記のコマンドを実行してください。
+
+```shell
+$ composer install
+$ composer serve
+
+php -S 0.0.0.0:8080 -t public/ public/index.php
+
+```
+
+これで、[http://localhost:8080/](http://localhost:8080/)でアプリケーションが動いていると思います。
 
 ## EB CLIの設定
 
@@ -119,4 +134,8 @@ $ eb open amzn-payments
 
 ![サンプルプログラム](https://raw.githubusercontent.com/wiki/johna1203/pwa-aws-summit/images/php-app-top-sample.png)
 
-## オレオレSSLの作成
+## HTTPSの環境を作ろう
+Amazon Paymentsは、HTTPSがないと動かない為
+
+
+
