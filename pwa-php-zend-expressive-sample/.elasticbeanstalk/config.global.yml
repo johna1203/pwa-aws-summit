@@ -1,0 +1,11 @@
+branch-defaults:
+  default:
+    environment: null
+    group_suffix: null
+global:
+  application_name: pwa-php-zend-expressive-sample
+  default_ec2_keyname: null
+  default_platform: PHP 5.5
+  default_region: ap-northeast-1
+  profile: eb-cli
+  sc: null
