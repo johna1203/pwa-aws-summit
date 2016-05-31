@@ -12,7 +12,7 @@
 
 ### アプリケーションの準備
 
-1. git clone をしよう
+* ###### git clone をしよう
 
 ```shell
 
@@ -26,7 +26,7 @@ Checking connectivity... done.
 
 ```
 
-3. Amazon Paymentsの基本的な設定
+* ###### Amazon Paymentsの基本的な設定
 
 merchant_id, access_key, secret_key, client_idの設定をしましょう。
 
@@ -56,7 +56,7 @@ return [
 
 これで、アプリケーションの作成準備ができました。
 
-2. EB CLIの設定
+* ###### EB CLIの設定
 
 EB CLI 基本的な設定は、[.elasticbeanstalk/config.global.yml](https://raw.githubusercontent.com/johna1203/pwa-aws-summit/master/pwa-php-zend-expressive-sample/.elasticbeanstalk/config.global.yml)
 で設定してありますので変更が必要なければこのまま使っても問題ないと思います。
@@ -76,7 +76,7 @@ global:
   sc: null
 ```
 
-3. eb create でアプリケーションを作成してみよう！
+* ###### eb create でアプリケーションを作成してみよう！
 
 今回は、amzn-paymentsと言うEnvironmentを使ってアプリケーションを作成します。
 
@@ -119,4 +119,4 @@ $ eb open amzn-payments
 
 ![サンプルプログラム](https://raw.githubusercontent.com/wiki/johna1203/pwa-aws-summit/images/php-app-top-sample.png)
 
-3. オレオレSSLの作成
+* ###### オレオレSSLの作成
