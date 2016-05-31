@@ -225,4 +225,4 @@ httpsでページにアクセスしてみると This Connection is Untrusted �
 
 ![https://raw.githubusercontent.com/wiki/johna1203/pwa-aws-summit/images/untrust.png](https://raw.githubusercontent.com/wiki/johna1203/pwa-aws-summit/images/untrust.png)
 
-*** これで、Elastic Beansの設定は完了です *** お疲れ様でした。
+***これで、Elastic Beansの設定は完了です*** お疲れ様でした。
