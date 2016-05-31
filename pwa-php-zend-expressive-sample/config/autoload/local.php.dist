@@ -1,0 +1,13 @@
+<?php
+
+return [
+    'pwaConfig' => [
+        'merchant_id'   => '',
+        'access_key'    => '',
+        'secret_key'    => '',
+        'client_id'     => '',
+        'currency_code' => 'JPY',
+        'region'        => 'jp',
+        'sandbox'   => true
+    ]
+];

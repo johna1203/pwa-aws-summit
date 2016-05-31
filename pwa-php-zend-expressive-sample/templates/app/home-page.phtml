@@ -1,0 +1,155 @@
+<?php $this->headTitle('Home'); ?>
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <div id="AmazonPayButton"></div>
+        <button id="AmazonLogout" class="btn btn-danger"> Logout </button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div id="addressBookWidgetDiv" style="height: 250px;"></div>
+    </div>
+
+    <div class="col-md-6">
+        <div id="walletWidgetDiv" style="height: 250px;"></div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <p>GetOrderReferenceDetailsの結果</p>
+        <pre id="serverResponse"></pre>
+    </div>
+</div>
+
+<?php
+$this->inlineScript()->captureStart();
+echo <<<JS
+(function() {
+
+    var app_id = '$this->application_id';
+    var seller_id = '$this->seller_id';
+    window.onAmazonLoginReady = function() {
+      amazon.Login.setClientId(app_id);
+      initWidgets();
+    };
+    
+    function hideWidget() {
+      $('#walletWidgetDiv').hide();
+      $('#addressBookWidgetDiv').hide();
+    }
+    
+    function showWidget() {
+      $('#walletWidgetDiv').show();
+      $('#addressBookWidgetDiv').show();
+    }
+    
+    function hideLoginButton() {
+      $('#AmazonPayButton').hide();
+    }
+    
+    function showLoginButton() {
+      $('#AmazonPayButton').show();
+    }
+    
+    function hideLogoutButton() {
+      $('#AmazonLogout').hide();
+    }
+        
+    function showLogoutButton() {
+      $('#AmazonLogout').show();
+    }
+    
+    function getOrderReference(orderReferenceId) {
+      $.get('/api/getOrderReference?ref=' + orderReferenceId, function(json) {
+        console.log(json);
+        $('#serverResponse').text(JSON.stringify(json, null, '  '));
+      });
+    }
+    
+    function logout() {
+      amazon.Login.logout();
+      hideWidget();
+      hideLogoutButton();
+      showLoginButton();      
+    }
+    
+    $('#AmazonLogout').click(logout);
+    
+    function initWidgets() {
+        var authRequest;
+        OffAmazonPayments.Button("AmazonPayButton", seller_id, {
+          type:  "PwA",
+          color: "Gold",
+          size:  "medium",
+    
+          authorization: function() {
+            loginOptions = {scope: "profile payments:widget payments:shipping_address", popup: true};
+            authRequest = amazon.Login.authorize (loginOptions, '/callback');
+          }
+        });
+        
+        
+        new OffAmazonPayments.Widgets.AddressBook({
+          sellerId: seller_id,
+          onOrderReferenceCreate: function (orderReference) {
+            var orderReferenceId = orderReference.getAmazonOrderReferenceId();
+            var el;
+            if ((el = document.getElementById("orderReferenceId"))) {
+              el.value = orderReferenceId;
+            }
+            
+            getOrderReference(orderReferenceId);
+            
+            hideLoginButton();
+            showLogoutButton();
+            showWidget();
+
+            // Wallet
+            new OffAmazonPayments.Widgets.Wallet({
+              sellerId: seller_id,
+              onPaymentSelect: function() {
+                console.log(arguments);
+              },
+              design: {
+                designMode: 'responsive'
+              },
+              onError: function(error) {
+                // Error handling code 
+                // We also recommend that you implement an onError handler in your code. 
+                // @see https://payments.amazon.com/documentation/lpwa/201954960
+                console.log('OffAmazonPayments.Widgets.Wallet', error.getErrorCode(), error.getErrorMessage());
+                hideWidget();
+                showLoginButton();
+                logout();
+              }
+            }).bind("walletWidgetDiv");
+          },
+          onAddressSelect: function (orderReference) {
+              // do stuff here like recalculate tax and/or shipping
+          },
+          design: {
+              designMode: 'responsive'
+          },
+          onError: function (error) {
+              // Error handling code 
+              // We also recommend that you implement an onError handler in your code. 
+              // @see https://payments.amazon.com/documentation/lpwa/201954960
+              console.log('OffAmazonPayments.Widgets.AddressBook', error.getErrorCode(), error.getErrorMessage());
+              hideWidget();
+              showLoginButton();
+              logout();
+              
+          }
+        }).bind("addressBookWidgetDiv");
+    }
+})();
+JS;
+$this->inlineScript()->captureEnd();
+
+$this->inlineScript()
+    ->appendFile('https://static-fe.payments-amazon.com/OffAmazonPayments/jp/sandbox/lpa/js/Widgets.js');
+
+?>
