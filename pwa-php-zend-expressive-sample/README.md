@@ -256,4 +256,4 @@ Javascriptの種類 : https://amzn-payments.egma52bepp.ap-northeast-1.elasticbea
 
 設定が成功したら、アプリケーションの***Amazonアカウントでを支払い***を押して、テストユーザでログインすると下の画像のようにAddress WidgetsとWallet Widgetsが表示されます。
 
-![https://raw.githubusercontent.com/wiki/johna1203/pwa-aws-summit/images/seller_central_url_add.png](https://raw.githubusercontent.com/wiki/johna1203/pwa-aws-summit/images/seller_central_url_add.png)
+![https://raw.githubusercontent.com/wiki/johna1203/pwa-aws-summit/images/amazon_widgets_sample.png](https://raw.githubusercontent.com/wiki/johna1203/pwa-aws-summit/images/amazon_widgets_sample.png)
