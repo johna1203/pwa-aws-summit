@@ -63,7 +63,7 @@ echo <<<JS
     }
     
     function getOrderReference(orderReferenceId) {
-      $.get('/api/getOrderReference?ref=' + orderReferenceId, function(json) {
+      $.get('/api/getOrderReference/' + orderReferenceId, function(json) {
         console.log(json);
         $('#serverResponse').text(JSON.stringify(json, null, '  '));
       });
