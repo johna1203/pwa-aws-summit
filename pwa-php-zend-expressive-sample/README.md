@@ -9,6 +9,7 @@
 
 * [AWSCLI](https://aws.amazon.com/jp/cli/)
 * [EB CLI](http://docs.aws.amazon.com/ja_jp/elasticbeanstalk/latest/dg/eb-cli3.html)
+* [Composer](https://getcomposer.org/)
 
 #では、アプリケーションの準備
 
