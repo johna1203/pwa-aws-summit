@@ -72,6 +72,7 @@ Elastic Beanstalkに、deployする前にアプリケーションがうまく動
 [Composer](https://getcomposer.org/) を使ってlocalhostで立ち上げるには下記のコマンドを実行してください。
 
 ```shell
+$ cd /path/to/pwa-aws-summit/pwa-php-zend-expressive-sample
 $ composer install
 $ composer serve
 
